@@ -77,7 +77,7 @@ typedef struct liststr
 typedef struct passinfo
 {
 	char *arg;
-	char *argv;
+	char **argv;
 	char *path;
 	int argc;
 	unsigned int line_count;
@@ -87,7 +87,7 @@ typedef struct passinfo
 	list_t *env;
 	list_t *history;
 	list_t *alias;
-	char *environ;
+	char **environ;
 	int env_changed;
 	int status;
 
@@ -97,7 +97,7 @@ typedef struct passinfo
 	int histcount;
 } info_t;
 
-#define INFO_INT\
+#define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
 	0, 0, 0}
 

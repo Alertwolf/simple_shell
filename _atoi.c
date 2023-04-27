@@ -67,7 +67,7 @@ int _atoi(char *s)
 	}
 
 	if (sign == -1)
-		output = -result
+		output = -result;
 	else
 		output = result;
 

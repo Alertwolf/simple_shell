@@ -9,7 +9,7 @@
  * Return: bytes read
  */
 
-ssize_t input_buf(info_t *info, char **buf, size_t *ten)
+ssize_t input_buf(info_t *info, char **buf, size_t *len)
 {
 	ssize_t r = 0;
 	size_t len_p = 0;
@@ -27,9 +27,9 @@ ssize_t input_buf(info_t *info, char **buf, size_t *ten)
 	#endif
 		if (r > 0)
 		{
-			if((*buf)[r-1] == '\n')
+			if ((*buf)[r - 1] == '\n')
 			{
-				(*buf)[r-1] == '\0'; /*remove trailing newline */
+				(*buf)[r - 1] == '\0'; /*remove trailing newline */
 				r--;
 			}
 			info->linecount_flag = 1;
@@ -40,7 +40,6 @@ ssize_t input_buf(info_t *info, char **buf, size_t *ten)
 				*len = r;
 				info->cmd_buf = buf;
 			}
-			
 		}
 	}
 	return (r);
@@ -81,7 +80,7 @@ ssize_t get_input(info_t *info)
 		if (i >= len) /*reached end of buffer?*/
 		{
 			i = len = 0; /*reset position and length */
-			info->cmd_buf_type = CMD_NORD;
+			info->cmd_buf_type = CMD_NORM;
 		}
 		*buf_p = p; /* pass back pointer to current command position*/
 		return (_strlen(p));/* return length of current command*/
@@ -113,7 +112,7 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 
 /**
  * _getline - gets the next line of input from STDIN
- * @inf:; parameter struct
+ * @info:parameter struct
  * @ptr: address of pointer to buffer, preallocated or NULL
  * @length: size of preallocated ptr buffer if not NULL
  *
@@ -123,9 +122,13 @@ ssize_t read_buf(info_t *info, char *buf, size_t *i)
 int _getline(info_t *info, char **ptr, size_t *length)
 {
 	static char buf[READ_BUF_SIZE];
-	static size_t i; len;
+
+	static size_t i, len;
+
 	size_t k;
+
 	ssize_t r = 0, s = 0;
+
 	char *p = NULL, *new_p = NULL, *c;
 
 	p = *ptr;
@@ -140,12 +143,12 @@ int _getline(info_t *info, char **ptr, size_t *length)
 	k = c ? 1 + (unsigned int)(c - buf) : len;
 	new_p = _realloc(p, s, s ? s + k : k + 1);
 	if (!new_p) /*MALLOC FAILURE! */
-		return (p ? free(p), -1: -1);
+		return (p ? free(p), -1 : -1);
 	if (s)
 		_strncpy(new_p, buf + 1, k - i + 1);
 	else
 		_strncpy(new_p, buf + i, k - i + 1);
-	s + = k - i;
+	s += k - i;
 	i = k;
 	p = new_p;
 
@@ -156,13 +159,13 @@ int _getline(info_t *info, char **ptr, size_t *length)
 }
 
 /**
- * sigintHander - blocks ctrl-C
+ * sigintHandler - blocks ctrl-C
  * @sig_num: the signal number
  *
  * Return: void
  */
 
-void signitHandler(_attribute_((unused))int sig_num)
+void sigintHandler(__attribute__((unused))int sig_num)
 {
 	_puts("\n");
 	_puts("$");
